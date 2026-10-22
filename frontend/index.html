@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EnergySense - Smart Energy Monitoring System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- ==================================================================== -->
+    <!-- SIDEBAR -->
+    <!-- ==================================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-wrapper">
+          <div class="logo-icon">
+            <i data-lucide="zap"></i>
+          </div>
+          <div class="logo-text">
+            <span class="logo-title">EnergySense</span>
+            <span class="logo-subtitle">Smart Energy<br/>Monitoring System</span>
+          </div>
+        </div>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-tab="dashboard">
+            <a href="#dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="live">
+            <a href="#live">
+              <i data-lucide="activity"></i>
+              <span>Live Data</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="analytics">
+            <a href="#analytics">
+              <i data-lucide="line-chart"></i>
+              <span>Analytics</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="billing">
+            <a href="#billing">
+              <i data-lucide="indian-rupee"></i>
+              <span>Bill & Cost</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="device">
+            <a href="#device">
+              <i data-lucide="cpu"></i>
+              <span>Device Status</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="settings">
+            <a href="#settings">
+              <i data-lucide="settings"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sustainability-card">
+          <div class="sustainability-icon">🌱</div>
+          <div class="sustainability-text">
+            <strong>Save Energy</strong>
+            <p>Save Money</p>
+            <span class="slogan">A Greener Tomorrow 🌱</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ==================================================================== -->
+    <!-- MAIN CONTENT AREA -->
+    <!-- ==================================================================== -->
+    <main class="main-wrapper">
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="header-slogan-box">
+            <span class="header-slogan">Monitor Today, Save Tomorrow</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Dynamic ESP32 Status Badge -->
+          <div class="status-pill status-loading" id="topbarStatusBadge" title="Calculated from real ThingSpeak feed timestamp">
+            <span class="pulse-dot"></span>
+            <span class="status-label" id="topbarStatusText">Connecting...</span>
+          </div>
+
+          <!-- Dynamic Last Update -->
+          <div class="last-update-pill" id="topbarLastUpdate" title="Time of last successful data feed">
+            <i data-lucide="clock"></i>
+            <span>Last update: <strong id="topbarTime">--:--:--</strong></span>
+          </div>
+
+          <!-- Manual Refresh Button -->
+          <button class="icon-action-btn" id="manualRefreshBtn" title="Fetch latest data now">
+            <i data-lucide="refresh-cw" id="refreshIcon"></i>
+          </button>
+
+          <!-- User Profile -->
+          <div class="user-profile">
+            <div class="avatar">
+              <i data-lucide="user"></i>
+            </div>
+            <div class="user-info">
+              <span class="user-name">Admin User</span>
+              <span class="user-role">Smart Grid Node</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW CONTAINER (Dynamic Tab Content) -->
+      <div class="content-container">
+
+        <!-- ================================================================ -->
+        <!-- TAB 1: DASHBOARD VIEW -->
+        <!-- ================================================================ -->
+        <section class="tab-view active" id="view-dashboard">
+          <!-- HERO BANNER -->
+          <div class="hero-banner">
+            <div class="hero-content">
+              <div class="hero-tag">
+                <i data-lucide="radio"></i>
+                <span>REAL-TIME IoT MONITORING</span>
+              </div>
+              <h1 class="hero-title">Smart Energy Monitoring System</h1>
+              <p class="hero-tagline">Track • Analyse • Save • Build a Sustainable Future</p>
+              
+              <div class="hero-chips">
+                <span class="chip"><i data-lucide="microchip"></i> ESP32</span>
+                <span class="chip"><i data-lucide="gauge"></i> PZEM-004T</span>
+                <span class="chip"><i data-lucide="cloud"></i> ThingSpeak Cloud</span>
+              </div>
+            </div>
+
+            <div class="hero-card">
+              <div class="hero-card-icon">⚡🌱</div>
+              <div class="hero-card-body">
+                <h3>Efficient Energy</h3>
+                <p>for a brighter tomorrow 🌱</p>
+                <div class="eco-metric">
+                  <span class="eco-val" id="heroEcoPower">-- W</span>
+                  <span class="eco-lbl">Live Load</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DASHBOARD ALERT BANNER (Non-intrusive warnings only, NO SMS) -->
+          <div class="alerts-container" id="dashboardAlertsContainer"></div>
+
+          <!-- 8 KPI METRIC CARDS -->
+          <div class="kpi-grid">
+            <!-- 1. Voltage -->
+            <div class="kpi-card" data-metric="voltage">
+              <div class="kpi-header">
+                <span class="kpi-title">Voltage</span>
+                <div class="kpi-icon-box blue">
+                  <i data-lucide="zap"></i>
+                </div>
+              </div>
+              <div class="kpi-body">
+                <div class="kpi-value-row">
+                  <span class="kpi-value" id="kpiVoltage">--</span>
+                  <span class="kpi-unit">V</span>
+                </div>
+                <div class="kpi-footer">
+                  <span class="kpi-status normal" id="kpiVoltageStatus">Nominal (230V)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Current -->
+            <div class="kpi-card" data-metric="current">
+              <div class="kpi-header">
+                <span class="kpi-title">Current</span>
+                <div class="kpi-icon-box purple">
+                  <i data-lucide="activity"></i>
+                </div>
+              </div>
+              <div class="kpi-body">
+                <div class="kpi-value-row">
+                  <span class="kpi-value" id="kpiCurrent">--</span>
+                  <span class="kpi-unit">A</span>
+                </div>
+                <div class="kpi-footer">
+                  <span class="kpi-status" id="kpiCurrentStatus">Active Load Draw</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Power -->
+            <div class="kpi-card" data-metric="power">
+              <div class="kpi-header">
+                <span class="kpi-title">Active Power</span>
+                <div class="kpi-icon-box orange">
+                  <i data-lucide="flame"></i>
+                </div>
+              </div>
+              <div class="kpi-body">
+                <div class="kpi-value-row">
+                  <span class="kpi-value" id="kpiPower">--</span>
+                  <span class="kpi-unit">W</span>
+                </div>
+                <div class="kpi-footer">
+                  <span class="kpi-status" id="kpiPowerStatus">Real-time Demand</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Energy -->
+            <div class="kpi-card" data-metric="energy">
+              <div class="kpi-header">
+                <span class="kpi-title">Cumulative Energy</span>
+                <div class="kpi-icon-box green">
+                  <i data-lucide="battery-charging"></i>
+                </div>
+              </div>
+              <div class="kpi-body">
+                <div class="kpi-value-row">
+                  <span class="kpi-value" id="kpiEnergy">--</span>
+                  <span class="kpi-unit">kWh</span>
+                </div>
+                <div class="kpi-footer">
+                  <span class="kpi-status green" id="kpiEnergyStatus">PZEM Total Count</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Bill Amount -->
+            <div class="kpi-card" data-metric="bill">
+              <div class="kpi-header">
+                <span class="kpi-title">Bill Amount</span>
+                <div class="kpi-icon-box indigo">
+                  <i data-lucide="indian-rupee"></i>
+                </div>
+              </div>
+              <div class="kpi-body">
+                <div class="kpi-value-row">
+                  <span class="kpi-currency">₹</span>
+                  <span class="kpi-value" id="kpiBill">--</span>
+                </div>
+                <div class="kpi-footer">
+                  <span class="kpi-status" id="kpiBillStatus">Field 7 / Calculated</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. Sustainability Index Card -->
+            <div class="kpi-card sustainability-kpi" data-metric="saving">
+              <div class="kpi-header">
+                <span class="kpi-title">Sustainability Index</span>
+                <div class="kpi-icon-box teal">
+                  <i data-lucide="leaf"></i>
+                </div>
+              </div>
+              <div class="kpi-body">
+                <div class="kpi-value-row">
+                  <span class="kpi-value" id="kpiEcoScore">--</span>
+                  <span class="kpi-unit">/ 100</span>
+                </div>
+                <div class="kpi-footer">
+                  <span class="kpi-status eco" id="kpiEcoStatus">High Efficiency Rating</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHARTS SECTION -->
+          <div class="charts-grid">
+            <!-- Chart 1: Live Data Trend -->
+            <div class="dashboard-chart-card">
+              <div class="chart-header">
+                <div class="chart-title-box">
+                  <h3>Live Data Trend</h3>
+                  <p>Real-time electrical parameters from PZEM-004T</p>
+                </div>
+                <div class="chart-controls">
+                  <div class="chart-legend-custom">
+                    <span class="legend-item"><span class="legend-color voltage"></span> Voltage (V)</span>
+                    <span class="legend-item"><span class="legend-color current"></span> Current (A)</span>
+                    <span class="legend-item"><span class="legend-color power"></span> Power (W)</span>
+                  </div>
+                  <select class="custom-select" id="trendRangeSelect">
+                    <option value="10">Last 10 readings</option>
+                    <option value="20" selected>Last 20 readings</option>
+                    <option value="50">Last 50 readings</option>
+                  </select>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="liveTrendChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: Energy Consumption -->
+            <div class="dashboard-chart-card">
+              <div class="chart-header">
+                <div class="chart-title-box">
+                  <h3>Energy Consumption</h3>
+                  <p>Cumulative kWh tracking & cost estimation</p>
+                </div>
+                <div class="energy-quick-stats">
+                  <div class="stat-badge">
+                    <span class="stat-badge-lbl">Consumption</span>
+                    <strong class="stat-badge-val" id="dashTotalEnergy">-- kWh</strong>
+                  </div>
+                  <div class="stat-badge">
+                    <span class="stat-badge-lbl">Est. Bill</span>
+                    <strong class="stat-badge-val" id="dashEstBill">₹ --</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="energyConsumptionChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTTOM SECTION: DEVICE STATUS & QUICK INSIGHTS -->
+          <div class="bottom-grid">
+            <!-- Device Status Card -->
+            <div class="card status-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="shield-check"></i>
+                  <h3>Device Status</h3>
+                </div>
+                <span class="tooltip-badge" title="Status dynamically inferred from the latest ThingSpeak update timestamp.">
+                  <i data-lucide="info"></i> Live Telemetry
+                </span>
+              </div>
+              <div class="card-body">
+                <div class="status-list">
+                  <!-- Wi-Fi / Data Link -->
+                  <div class="status-row">
+                    <div class="status-row-info">
+                      <span class="status-name">Wi-Fi / Data Link</span>
+                      <small class="status-subtext">Status inferred from the latest ThingSpeak update.</small>
+                    </div>
+                    <div class="status-value-badge badge-neutral" id="statusDataLink">
+                      <span class="dot"></span>
+                      <span class="txt">Waiting...</span>
+                    </div>
+                  </div>
+
+                  <!-- ESP32 -->
+                  <div class="status-row">
+                    <div class="status-row-info">
+                      <span class="status-name">ESP32 Controller</span>
+                      <small class="status-subtext" id="statusEsp32Sub">PZEM-004T Modbus Serial Link</small>
+                    </div>
+                    <div class="status-value-badge badge-neutral" id="statusEsp32">
+                      <span class="dot"></span>
+                      <span class="txt">Waiting...</span>
+                    </div>
+                  </div>
+
+                  <!-- ThingSpeak Cloud -->
+                  <div class="status-row">
+                    <div class="status-row-info">
+                      <span class="status-name">ThingSpeak Cloud</span>
+                      <small class="status-subtext" id="statusCloudSub">Read API Feed Synchronization</small>
+                    </div>
+                    <div class="status-value-badge badge-neutral" id="statusThingSpeak">
+                      <span class="dot"></span>
+                      <span class="txt">Waiting...</span>
+                    </div>
+                  </div>
+
+                  <!-- Last Update -->
+                  <div class="status-row">
+                    <div class="status-row-info">
+                      <span class="status-name">Last Successful Feed</span>
+                      <small class="status-subtext" id="statusAgeSub">Age: --</small>
+                    </div>
+                    <div class="status-timestamp" id="statusLastUpdate">
+                      --:--:--
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Insights Card -->
+            <div class="card insights-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="sparkles"></i>
+                  <h3>Quick Insights</h3>
+                </div>
+                <span class="subtitle-badge">Data-Driven Diagnostics</span>
+              </div>
+              <div class="card-body">
+                <div class="insights-grid">
+                  <!-- Usage Status -->
+                  <div class="insight-box">
+                    <div class="insight-top">
+                      <span class="insight-label">Usage Status</span>
+                      <span class="insight-tag tag-normal" id="insightUsageTag">Evaluating...</span>
+                    </div>
+                    <p class="insight-description" id="insightUsageDesc">Analyzing active power draw...</p>
+                  </div>
+
+                  <!-- Efficiency -->
+                  <div class="insight-box">
+                    <div class="insight-top">
+                      <span class="insight-label">Efficiency</span>
+                      <span class="insight-tag tag-good" id="insightEffTag">Evaluating...</span>
+                    </div>
+                    <p class="insight-description" id="insightEffDesc">Evaluated from voltage stability and load demand.</p>
+                  </div>
+
+                  <!-- Trend -->
+                  <div class="insight-box">
+                    <div class="insight-top">
+                      <span class="insight-label">Power Trend</span>
+                      <span class="insight-tag tag-stable" id="insightTrendTag">Stable</span>
+                    </div>
+                    <p class="insight-description" id="insightTrendDesc">Historical delta across recent feeds.</p>
+                  </div>
+                </div>
+
+                <div class="sustainability-tip-banner">
+                  <i data-lucide="lightbulb"></i>
+                  <div>
+                    <strong>Energy Saving Tip:</strong>
+                    <span id="sustainabilityTipText">Optimizing power consumption during peak periods and maintaining steady voltage levels helps maximize energy efficiency.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ESP32 OLED Hardware Mirror Card -->
+            <div class="card oled-mirror-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="monitor" class="text-cyan"></i>
+                  <h3>ESP32 OLED 128×64 Display</h3>
+                </div>
+                <div class="oled-controls">
+                  <button class="oled-btn active" id="oledModeAuto" title="Auto Alternate every 3s (matches ESP32 code)">Auto (3s)</button>
+                  <button class="oled-btn" id="oledModeS1" title="Force Screen 1: Power Monitor">Screen 1</button>
+                  <button class="oled-btn" id="oledModeS2" title="Force Screen 2: Bill Information">Screen 2</button>
+                </div>
+              </div>
+              <div class="card-body oled-card-body">
+                <div class="oled-frame">
+                  <div class="oled-screen" id="oledScreenContainer">
+                    <!-- Screen 1: POWER MONITOR -->
+                    <div class="oled-display-screen" id="oledDisplayS1">
+                      <div class="oled-screen-title">POWER MONITOR</div>
+                      <div class="oled-line-hr"></div>
+                      <div class="oled-row"><span>Voltage : </span><strong id="oledV">-- V</strong></div>
+                      <div class="oled-row"><span>Current : </span><strong id="oledI">-- A</strong></div>
+                      <div class="oled-row"><span>Power   : </span><strong id="oledP">-- W</strong></div>
+                      <div class="oled-row"><span>Energy  : </span><strong id="oledE">-- kWh</strong></div>
+                    </div>
+                    <!-- Screen 2: BILL INFORMATION -->
+                    <div class="oled-display-screen" id="oledDisplayS2" style="display: none;">
+                      <div class="oled-screen-title">BILL INFORMATION</div>
+                      <div class="oled-line-hr"></div>
+                      <div class="oled-row"><span>Units : </span><strong id="oledUnits">-- U</strong></div>
+                      <div class="oled-row"><span>Bill  : </span><strong>Rs.<span id="oledBill">--</span></strong></div>
+                    </div>
+                  </div>
+                  <div class="oled-meta">
+                    <span class="oled-pill"><i data-lucide="cpu"></i> Adafruit_SSD1306 (0x3C)</span>
+                    <span class="oled-pill active" id="oledActiveScreenIndicator">Screen 1 / 2</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 2: LIVE DATA VIEW -->
+        <!-- ================================================================ -->
+        <section class="tab-view" id="view-live">
+          <div class="section-title-bar">
+            <div>
+              <h2>Live Electrical Telemetry</h2>
+              <p>Direct feed monitoring from ESP32 + PZEM-004T sensor</p>
+            </div>
+            <div class="live-meta-tags">
+              <span class="meta-tag"><i data-lucide="database"></i> Source: ThingSpeak Cloud</span>
+              <span class="meta-tag"><i data-lucide="timer"></i> Polling: <span id="livePollRate">15s</span></span>
+            </div>
+          </div>
+
+          <!-- Live High-Resolution Metric Cards -->
+          <div class="live-cards-grid">
+            <div class="live-card">
+              <div class="live-card-top">
+                <span class="live-label">Voltage (V)</span>
+                <i data-lucide="zap" class="text-blue"></i>
+              </div>
+              <div class="live-card-val"><span id="liveVoltage">--</span> <small>V</small></div>
+              <div class="live-progress-bar"><div class="live-progress-fill" id="barVoltage" style="width: 0%"></div></div>
+              <div class="live-card-footer">
+                <span>Min: <b id="minVoltage">--</b></span>
+                <span>Max: <b id="maxVoltage">--</b></span>
+              </div>
+            </div>
+
+            <div class="live-card">
+              <div class="live-card-top">
+                <span class="live-label">Current (A)</span>
+                <i data-lucide="activity" class="text-purple"></i>
+              </div>
+              <div class="live-card-val"><span id="liveCurrent">--</span> <small>A</small></div>
+              <div class="live-progress-bar"><div class="live-progress-fill bg-purple" id="barCurrent" style="width: 0%"></div></div>
+              <div class="live-card-footer">
+                <span>Min: <b id="minCurrent">--</b></span>
+                <span>Max: <b id="maxCurrent">--</b></span>
+              </div>
+            </div>
+
+            <div class="live-card">
+              <div class="live-card-top">
+                <span class="live-label">Active Power (W)</span>
+                <i data-lucide="flame" class="text-orange"></i>
+              </div>
+              <div class="live-card-val"><span id="livePower">--</span> <small>W</small></div>
+              <div class="live-progress-bar"><div class="live-progress-fill bg-orange" id="barPower" style="width: 0%"></div></div>
+              <div class="live-card-footer">
+                <span>Min: <b id="minPower">--</b></span>
+                <span>Max: <b id="maxPower">--</b></span>
+              </div>
+            </div>
+
+            <div class="live-card">
+              <div class="live-card-top">
+                <span class="live-label">Total Energy (kWh)</span>
+                <i data-lucide="battery-charging" class="text-green"></i>
+              </div>
+              <div class="live-card-val"><span id="liveEnergy">--</span> <small>kWh</small></div>
+              <div class="live-progress-bar"><div class="live-progress-fill bg-green" id="barEnergy" style="width: 0%"></div></div>
+              <div class="live-card-footer">
+                <span>PZEM Memory: <b id="pzemStatus">Synchronized</b></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Stream Chart -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <div class="card-title-group">
+                <i data-lucide="play-circle"></i>
+                <h3>Live Waveform Stream (Power & Current)</h3>
+              </div>
+              <span class="badge-live-pulse"><span class="live-dot"></span> STREAMING</span>
+            </div>
+            <div class="chart-body">
+              <canvas id="liveStreamChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Live Feed Packets Inspector -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <div class="card-title-group">
+                <i data-lucide="list"></i>
+                <h3>Recent ThingSpeak Feed Packets</h3>
+              </div>
+              <span class="subtitle-badge">Last 10 Entries</span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="data-table" id="liveFeedsTable">
+                  <thead>
+                    <tr>
+                      <th>Entry ID</th>
+                      <th>Timestamp</th>
+                      <th>Voltage (V)</th>
+                      <th>Current (A)</th>
+                      <th>Power (W)</th>
+                      <th>Energy (kWh)</th>
+                      <th>Bill (₹)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="liveFeedsTableBody">
+                    <tr>
+                      <td colspan="7" class="text-center py-4">Waiting for ThingSpeak data packets...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 3: ANALYTICS VIEW -->
+        <!-- ================================================================ -->
+        <section class="tab-view" id="view-analytics">
+          <div class="section-title-bar">
+            <div>
+              <h2>Energy & Power Analytics</h2>
+              <p>Deep-dive historical charts and load profiling</p>
+            </div>
+            <div class="chart-controls">
+              <label for="analyticsRangeSelect">Historical Scope:</label>
+              <select class="custom-select" id="analyticsRangeSelect">
+                <option value="10">Last 10 readings</option>
+                <option value="20" selected>Last 20 readings</option>
+                <option value="50">Last 50 readings</option>
+                <option value="100">Last 100 readings</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Analytics Summary Stats -->
+          <div class="analytics-stats-row">
+            <div class="stat-box">
+              <span class="stat-lbl">Peak Power Load</span>
+              <span class="stat-num text-orange" id="statPeakPower">-- W</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-lbl">Average Voltage</span>
+              <span class="stat-num text-blue" id="statAvgVoltage">-- V</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-lbl">Energy Accumulated</span>
+              <span class="stat-num text-purple" id="statTotalEnergy">-- kWh</span>
+            </div>
+          </div>
+
+          <!-- Analytics 4-Chart Grid -->
+          <div class="analytics-grid">
+            <!-- 1. Power Trend -->
+            <div class="card analytics-chart-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="flame" class="text-orange"></i>
+                  <h4>Active Power Trend (W)</h4>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="chartAnalyticsPower"></canvas>
+              </div>
+            </div>
+
+            <!-- 2. Energy Consumption -->
+            <div class="card analytics-chart-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="battery-charging" class="text-green"></i>
+                  <h4>Cumulative Energy (kWh)</h4>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="chartAnalyticsEnergy"></canvas>
+              </div>
+            </div>
+
+            <!-- 3. Voltage Stability -->
+            <div class="card analytics-chart-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="zap" class="text-blue"></i>
+                  <h4>Grid Voltage Stability (V)</h4>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="chartAnalyticsVoltage"></canvas>
+              </div>
+            </div>
+
+            <!-- 4. Current Profile -->
+            <div class="card analytics-chart-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="activity" class="text-purple"></i>
+                  <h4>Current Profile (A)</h4>
+                </div>
+              </div>
+              <div class="chart-body">
+                <canvas id="chartAnalyticsCurrent"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 4: BILL & COST VIEW -->
+        <!-- ================================================================ -->
+        <section class="tab-view" id="view-billing">
+          <div class="section-title-bar">
+            <div>
+              <h2>Electricity Billing & Cost Management</h2>
+              <p>Real-time bill telemetry computed by ESP32 firmware</p>
+            </div>
+            <div class="badge badge-info">
+              <i data-lucide="cpu"></i> ESP32 Field 7 Synced
+            </div>
+          </div>
+
+          <!-- Billing Overview Cards -->
+          <div class="billing-cards-grid">
+            <div class="billing-card primary">
+              <div class="billing-card-icon"><i data-lucide="receipt"></i></div>
+              <div class="billing-card-content">
+                <span class="billing-card-lbl">Current Bill Amount</span>
+                <h3 class="billing-card-val"><small>₹</small> <span id="billCurrentAmount">--</span></h3>
+                <p class="billing-card-sub" id="billSourceDesc">Source: ThingSpeak Field 7</p>
+              </div>
+            </div>
+
+            <div class="billing-card">
+              <div class="billing-card-icon text-green"><i data-lucide="battery-charging"></i></div>
+              <div class="billing-card-content">
+                <span class="billing-card-lbl">Energy Consumed</span>
+                <h3 class="billing-card-val"><span id="billEnergyTotal">--</span> <small>kWh</small></h3>
+                <p class="billing-card-sub">Accrued through PZEM-004T</p>
+              </div>
+            </div>
+
+            <div class="billing-card">
+              <div class="billing-card-icon text-purple"><i data-lucide="calendar"></i></div>
+              <div class="billing-card-content">
+                <span class="billing-card-lbl">Est. Monthly Bill</span>
+                <h3 class="billing-card-val"><small>₹</small> <span id="billEstMonthly">--</span></h3>
+                <p class="billing-card-sub">Projected at 30-day baseline</p>
+              </div>
+            </div>
+
+            <div class="billing-card">
+              <div class="billing-card-icon text-orange"><i data-lucide="trending-up"></i></div>
+              <div class="billing-card-content">
+                <span class="billing-card-lbl">Est. Daily Cost</span>
+                <h3 class="billing-card-val"><small>₹</small> <span id="billEstDaily">--</span></h3>
+                <p class="billing-card-sub">Based on 24-hr active demand</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Billing Details & Slab Breakdown -->
+          <div class="billing-details-grid mt-4">
+            <!-- TNEB Slab Structure Card -->
+            <div class="card tneb-slab-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="layers" class="text-indigo"></i>
+                  <h3>TNEB Domestic Tariff Slab Breakdown</h3>
+                </div>
+                <span class="badge badge-info" id="activeSlabBadge">Slab 1 (0-200 U)</span>
+              </div>
+              <div class="card-body">
+                <div class="tneb-table-wrapper">
+                  <table class="tneb-table">
+                    <thead>
+                      <tr>
+                        <th>Consumption Slab</th>
+                        <th>Tariff Rate</th>
+                        <th>Units Billed</th>
+                        <th>Slab Subtotal</th>
+                        <th>Tier Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tnebSlabBody">
+                      <tr id="tnebRow1" class="slab-active">
+                        <td><strong>Slab 1</strong> (0 – 200 Units)</td>
+                        <td><span class="slab-free-badge">FREE (₹0.00)</span></td>
+                        <td id="tnebSlab1Units">0.00 U</td>
+                        <td id="tnebSlab1Cost">₹ 0.00</td>
+                        <td><span class="slab-tier-pill active" id="tnebSlab1Status">Active</span></td>
+                      </tr>
+                      <tr id="tnebRow2">
+                        <td><strong>Slab 2</strong> (201 – 400 Units)</td>
+                        <td>₹ 4.70 / Unit</td>
+                        <td id="tnebSlab2Units">0.00 U</td>
+                        <td id="tnebSlab2Cost">₹ 0.00</td>
+                        <td><span class="slab-tier-pill" id="tnebSlab2Status">Inactive</span></td>
+                      </tr>
+                      <tr id="tnebRow3">
+                        <td><strong>Slab 3</strong> (401 – 500 Units)</td>
+                        <td>₹ 6.30 / Unit</td>
+                        <td id="tnebSlab3Units">0.00 U</td>
+                        <td id="tnebSlab3Cost">₹ 0.00</td>
+                        <td><span class="slab-tier-pill" id="tnebSlab3Status">Inactive</span></td>
+                      </tr>
+                      <tr id="tnebRow4">
+                        <td><strong>Slab 4</strong> (Above 500 Units)</td>
+                        <td>₹ 8.40 / Unit</td>
+                        <td id="tnebSlab4Units">0.00 U</td>
+                        <td id="tnebSlab4Cost">₹ 0.00</td>
+                        <td><span class="slab-tier-pill" id="tnebSlab4Status">Inactive</span></td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="3"><strong>Total Billed Amount (TNEB Slabs)</strong></td>
+                        <td colspan="2"><strong class="text-primary-green" id="tnebTotalCalculated">₹ 0.00</strong></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                <div class="bill-breakdown-list mt-3">
+                  <div class="breakdown-item">
+                    <span>PZEM-004T Cumulative Energy (Field 4)</span>
+                    <strong id="breakdownEnergy">-- kWh</strong>
+                  </div>
+                  <div class="breakdown-item">
+                    <span>ESP32 ThingSpeak Transmitted Bill (Field 7)</span>
+                    <strong id="breakdownField7">₹ --</strong>
+                  </div>
+                  <div class="breakdown-item highlight">
+                    <span>Calculated Equivalent (TNEB Slab Formula)</span>
+                    <strong id="breakdownCalculated">₹ --</strong>
+                  </div>
+                </div>
+
+                <div class="info-callout mt-3">
+                  <i data-lucide="info"></i>
+                  <p><strong>ESP32 Logic Match:</strong> Calculations match the TNEB formula coded in your Arduino firmware: 0-200 Free, 201-400 @ ₹4.70, 401-500 @ ₹6.30, &gt;500 @ ₹8.40.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Energy Saving Optimization -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="sparkles" class="text-green"></i>
+                  <h3>Cost Optimization Recommendations</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="saving-tips-list">
+                  <div class="tip-item">
+                    <div class="tip-icon"><i data-lucide="check-circle-2"></i></div>
+                    <div class="tip-text">
+                      <strong>Off-Peak Load Balancing</strong>
+                      <p>Running heavy electrical loads during off-peak hours reduces peak grid stress.</p>
+                    </div>
+                  </div>
+                  <div class="tip-item">
+                    <div class="tip-icon"><i data-lucide="check-circle-2"></i></div>
+                    <div class="tip-text">
+                      <strong>High-Draw Appliance Scheduling</strong>
+                      <p>Staggering high-wattage appliance usage helps maintain consistent load levels and prevents surges.</p>
+                    </div>
+                  </div>
+                  <div class="tip-item">
+                    <div class="tip-icon"><i data-lucide="check-circle-2"></i></div>
+                    <div class="tip-text">
+                      <strong>Vampire Power Mitigation</strong>
+                      <p>Eliminate standby power drain on inactive appliances to save up to 10% monthly.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 5: DEVICE STATUS & DIAGNOSTICS VIEW -->
+        <!-- ================================================================ -->
+        <section class="tab-view" id="view-device">
+          <div class="section-title-bar">
+            <div>
+              <h2>Device Health & Diagnostics</h2>
+              <p>Real-time topology, communication links, and telemetry state</p>
+            </div>
+            <div class="status-pill status-loading" id="deviceViewStatusBadge">
+              <span class="pulse-dot"></span>
+              <span id="deviceViewStatusText">Evaluating...</span>
+            </div>
+          </div>
+
+          <!-- Architecture Topology Diagram -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <i data-lucide="network"></i>
+                <h3>End-to-End System Topology</h3>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="topology-container">
+                <!-- Node 1: PZEM-004T -->
+                <div class="topology-node">
+                  <div class="node-icon bg-blue"><i data-lucide="gauge"></i></div>
+                  <strong class="node-name">PZEM-004T</strong>
+                  <span class="node-role">AC Power Sensor</span>
+                  <div class="node-badge" id="nodePzemStatus">Hardware Link</div>
+                </div>
+
+                <div class="topology-arrow"><i data-lucide="arrow-right"></i><span>UART / Serial</span></div>
+
+                <!-- Node 2: ESP32 -->
+                <div class="topology-node">
+                  <div class="node-icon bg-indigo"><i data-lucide="cpu"></i></div>
+                  <strong class="node-name">ESP32</strong>
+                  <span class="node-role">Microcontroller</span>
+                  <div class="node-badge" id="nodeEsp32Status">Online</div>
+                </div>
+
+                <div class="topology-arrow"><i data-lucide="arrow-right"></i><span>802.11 b/g/n</span></div>
+
+                <!-- Node 3: Wi-Fi / Data Link -->
+                <div class="topology-node">
+                  <div class="node-icon bg-cyan"><i data-lucide="wifi"></i></div>
+                  <strong class="node-name">Wi-Fi Link</strong>
+                  <span class="node-role">Access Point Gateway</span>
+                  <div class="node-badge" id="nodeWifiStatus">Connected</div>
+                </div>
+
+                <div class="topology-arrow"><i data-lucide="arrow-right"></i><span>HTTPS POST</span></div>
+
+                <!-- Node 4: ThingSpeak Cloud -->
+                <div class="topology-node">
+                  <div class="node-icon bg-orange"><i data-lucide="cloud"></i></div>
+                  <strong class="node-name">ThingSpeak</strong>
+                  <span class="node-role">IoT Cloud Broker</span>
+                  <div class="node-badge" id="nodeCloudStatus">Updating</div>
+                </div>
+
+                <div class="topology-arrow"><i data-lucide="arrow-right"></i><span>REST API</span></div>
+
+                <!-- Node 5: Web App -->
+                <div class="topology-node active-hub">
+                  <div class="node-icon bg-green"><i data-lucide="monitor"></i></div>
+                  <strong class="node-name">EnergySense</strong>
+                  <span class="node-role">Web Application</span>
+                  <div class="node-badge badge-active">Active</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Diagnostics Checklist & Telemetry Details -->
+          <div class="device-diagnostics-grid mt-4">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="activity"></i>
+                  <h3>Live Telemetry Metrics</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="diagnostics-metrics-list">
+                  <div class="diag-row">
+                    <span>Configured Channel ID</span>
+                    <strong id="diagChannelId">--</strong>
+                  </div>
+                  <div class="diag-row">
+                    <span>Latest Feed Entry ID</span>
+                    <strong id="diagEntryId">--</strong>
+                  </div>
+                  <div class="diag-row">
+                    <span>Last Data Timestamp</span>
+                    <strong id="diagLastTimestamp">--</strong>
+                  </div>
+                  <div class="diag-row">
+                    <span>Data Freshness Age</span>
+                    <strong id="diagFeedAge">-- seconds</strong>
+                  </div>
+                  <div class="diag-row">
+                    <span>Data Timeout Threshold</span>
+                    <strong id="diagTimeout">60 seconds</strong>
+                  </div>
+                  <div class="diag-row">
+                    <span>Connection Health Inferred</span>
+                    <strong id="diagConnectionHealth" class="text-green">Active</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="check-square"></i>
+                  <h3>Hardware Troubleshooting Guide</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="troubleshoot-steps">
+                  <div class="step-item">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                      <strong>Check ESP32 Power & Wi-Fi:</strong>
+                      <p>Ensure ESP32 LED is solid. Verify 2.4 GHz Wi-Fi credentials in your Arduino/ESP-IDF sketch.</p>
+                    </div>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                      <strong>PZEM-004T Serial RX/TX:</strong>
+                      <p>Verify PZEM TX connects to ESP32 RX (e.g. GPIO16) and PZEM RX connects to ESP32 TX (GPIO17).</p>
+                    </div>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                      <strong>ThingSpeak Channel Rate Limits:</strong>
+                      <p>Free ThingSpeak accounts require minimum 15-second interval between uploads.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 6: SETTINGS VIEW -->
+        <!-- ================================================================ -->
+        <section class="tab-view" id="view-settings">
+          <div class="section-title-bar">
+            <div>
+              <h2>Application & IoT Settings</h2>
+              <p>Configure ThingSpeak API credentials and local monitoring parameters</p>
+            </div>
+          </div>
+
+          <div class="settings-form-wrapper">
+            <form id="settingsForm" class="card settings-card">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <i data-lucide="key-round"></i>
+                  <h3>ThingSpeak API Configuration</h3>
+                </div>
+                <span class="security-badge"><i data-lucide="shield"></i> Read Key Protected</span>
+              </div>
+
+              <div class="card-body">
+                <!-- Channel ID -->
+                <div class="form-group">
+                  <label for="settingChannelId">
+                    ThingSpeak Channel ID <span class="required">*</span>
+                  </label>
+                  <input type="text" id="settingChannelId" class="form-control" placeholder="e.g. 2654321" required />
+                  <small class="form-hint">Numeric channel ID found in your ThingSpeak channel overview.</small>
+                </div>
+
+                <!-- Read API Key -->
+                <div class="form-group">
+                  <label for="settingReadApiKey">
+                    ThingSpeak Read API Key <span class="required">*</span>
+                  </label>
+                  <div class="input-with-action">
+                    <input type="password" id="settingReadApiKey" class="form-control" placeholder="Enter your READ API KEY (e.g. 16-character alphanumeric)" />
+                    <button type="button" class="input-action-btn" id="toggleApiKeyBtn" title="Toggle visibility">
+                      <i data-lucide="eye" id="toggleApiKeyIcon"></i>
+                    </button>
+                  </div>
+                  <small class="form-hint">Only READ API Key is used. Write API Key is never used in the web app.</small>
+                </div>
+
+                <div class="form-divider"></div>
+
+                <!-- Polling Interval & Timeout -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="settingRefreshInterval">
+                      Data Refresh Interval (seconds)
+                    </label>
+                    <input type="number" id="settingRefreshInterval" class="form-control" min="5" max="300" value="15" />
+                    <small class="form-hint">Interval between automatic polls (Recommended: 15s).</small>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="settingDataTimeout">
+                      Data Timeout Threshold (seconds)
+                    </label>
+                    <input type="number" id="settingDataTimeout" class="form-control" min="15" max="600" value="60" />
+                    <small class="form-hint">Duration after which ESP32 is marked OFFLINE (Default: 60s).</small>
+                  </div>
+                </div>
+
+                <div class="settings-actions">
+                  <button type="button" class="btn btn-secondary" id="btnTestConnection">
+                    <i data-lucide="radio"></i> Test Connection
+                  </button>
+                  <button type="submit" class="btn btn-primary" id="btnSaveSettings">
+                    <i data-lucide="save"></i> Save Settings
+                  </button>
+                </div>
+
+                <!-- Toast feedback container -->
+                <div class="settings-feedback mt-3" id="settingsFeedback" style="display: none;"></div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- App Script -->
+  <script src="script.js"></script>
+</body>
+</html>
